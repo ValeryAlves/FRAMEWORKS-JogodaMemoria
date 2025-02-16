@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .memory-game {
+            display: flex;
+            flex-wrap: wrap;
+            width: 480px;
+            margin: 50px auto;
+            /* Um contêiner flexível que mantém os cards.*/
+        }
+        .memory-card {
+            width: calc(25% - 10px);
+            height: 120px;
+            margin: 5px;
+            position: relative;
+            /*Define cada card*/
+        }
+        .front, .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 5px;
+            /*Definem os lados da frente e do verso dos cards*/
+        }
+        .front {
+            background: #fff;
+        }
+        .back {
+            background: #333;
+            display: none; /* Inicia as imagens do verso ocultas */
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center">Jogo da Memória</h1> 
+    <h2 style="text-align:center">Animais da Fazenda</h2>
+    
+    <div class="memory-game">
+        <div class="memory-card" data-card="1">
+            <img class="front" src="verso.png" />
+            <img class="back" src="bode.png" />
+        </div>
+        <div class="memory-card" data-card="2">
+            <img class="front" src="verso.png" />
+            <img class="back" src="cavalo.png" />
+        </div>
+        <div class="memory-card" data-card="3">
+            <img class="front" src="verso.png" />
+            <img class="back" src="coelho.png" />
+        </div>
+        <div class="memory-card" data-card="2">
+            <img class="front" src="verso.png" />
+            <img class="back" src="cavalo.png" />
+        </div>
+        <div class="memory-card" data-card="6">
+            <img class="front" src="verso.png" />
+            <img class="back" src="pato.png" />
+        </div>  
+        <div class="memory-card" data-card="4">
+            <img class="front" src="verso.png" />
+            <img class="back" src="galinha.png" />
+        </div>
+        <div class="memory-card" data-card="5">
+            <img class="front" src="verso.png" />
+            <img class="back" src="ovelha.png" />
+        </div>  
+        <div class="memory-card" data-card="8">
+            <img class="front" src="verso.png" />
+            <img class="back" src="vaca.png" />
+        </div> 
+        <div class="memory-card" data-card="3">
+            <img class="front" src="verso.png" />
+            <img class="back" src="coelho.png" />
+        </div>  
+        <div class="memory-card" data-card="5">
+            <img class="front" src="verso.png" />
+            <img class="back" src="ovelha.png" />
+        </div>  
+        <div class="memory-card" data-card="6">
+            <img class="front" src="verso.png" />
+            <img class="back" src="pato.png" />
+        </div>  
+        <div class="memory-card" data-card="7">
+            <img class="front" src="verso.png" />
+            <img class="back" src="porco.png" />
+        </div>  
+        <div class="memory-card" data-card="4">
+            <img class="front" src="verso.png" />
+            <img class="back" src="galinha.png" />
+        </div>
+        <div class="memory-card" data-card="7">
+            <img class="front" src="verso.png" />
+            <img class="back" src="porco.png" />
+        </div>  
+        <div class="memory-card" data-card="8">
+            <img class="front" src="verso.png" />
+            <img class="back" src="vaca.png" />
+        </div>  
+        <div class="memory-card" data-card="1">
+            <img class="front" src="verso.png" />
+            <img class="back" src="bode.png" />
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        
+        $(document).ready(function() { /*inicia o código quando o documento HTML está completamente carregado e pronto*/
+            let hasFlippedCard = false; /*Verifica se um card já foi virado*/
+            let lockBoard = false; /*Impede que o usuário vire outros cards enquanto dois cards são comparados*/
+            let firstCard, secondCard; /*Guardam referências aos cards virados para comparação.*/
+
+            $('.memory-card').on('click', function() { /*Adiciona um manipulador de eventos*/
+                if (lockBoard) return; /*Impede a execução do código se o tabuleiro estiver travado*/
+                if ($(this).hasClass('show')) return; /*Impede a execução do código se o card já estiver virado*/
+
+                $(this).find('.front').fadeToggle();
+                $(this).find('.back').fadeToggle();   /*Alterna (mostra/esconde) as imagens de frente e verso*/
+                $(this).addClass('show'); /*Adiciona a classe show ao card*/
+
+                if (!hasFlippedCard) { /*Se nenhum card foi virado*/
+                    hasFlippedCard = true; /*Marca que um card foi virado*/
+                    firstCard = $(this); /*Armazena o card atual*/
+                    return;
+                }
+
+                secondCard = $(this); /*Se um card já foi virado, armazena o card atual*/
+                checkForMatch(); /*Verifica se os cards são iguais*/
+            });
+
+            function checkForMatch() {
+                let isMatch = firstCard.data('card') === secondCard.data('card'); /*Compara os dados dos dois cards virados*/
+                isMatch ? disableCards() : unflipCards(); /*Se correspondem, desativa os cards; caso contrário, desvira os cards.*/
+            }
+
+            function disableCards() { /*Remove o evento de clique dos dois cards correspondentes*/
+                firstCard.off('click'); 
+                secondCard.off('click'); 
+                resetBoard(); /*Reseta o tabuleir*/
+            }
+
+            function unflipCards() {
+                lockBoard = true; /*Trava o tabuleiro*/
+                setTimeout(() => {
+                    firstCard.find('.front').fadeToggle();
+                    firstCard.find('.back').fadeToggle();
+                    secondCard.find('.front').fadeToggle();
+                    secondCard.find('.back').fadeToggle(); /*Após 1500 ms (1,5 segundos), esconde as imagens de frente e mostra as imagens de verso dos dois cards*/
+                    firstCard.removeClass('show');
+                    secondCard.removeClass('show'); /*Remove a classe show dos dois cards*/
+                    resetBoard();
+                }, 1500);
+            }
+
+            function resetBoard() {
+                [hasFlippedCard, lockBoard] = [false, false];
+                [firstCard, secondCard] = [null, null];
+            }
+        });
+    </script>
+</body>
+</html>
