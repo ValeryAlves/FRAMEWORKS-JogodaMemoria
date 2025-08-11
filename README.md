@@ -10,6 +10,9 @@ O tema é **animais da fazenda**, e o objetivo é encontrar todos os pares de ca
 4. Se forem diferentes, elas voltam para a posição inicial.
 5. Continue até encontrar todos os pares.
 
+## 🖼️ Prévia
+<img width="495" height="665" alt="image" src="https://github.com/user-attachments/assets/12c2008b-4163-4f74-aaa3-48d9b78c5faa" />
+
 ## 🛠️ Tecnologias utilizadas
 - HTML5
 - CSS3
