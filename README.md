@@ -1,6 +1,6 @@
 # 🐄 Jogo da Memória - Animais da Fazenda
 
-Um jogo da memória simples, feito com **HTML**, **CSS** e **JavaScript/jQuery**, criado para treinar lógica de programação e manipulação do DOM para a disciplina FrameWorks do 2º Semestre no curso de Sistemas para Internet - IFMT.  
+Um jogo da memória simples, feito com **HTML**, **CSS** e **JavaScript/jQuery**, criado para treinar lógica de programação e manipulação do DOM para a disciplina FrameWorks do 2º Semestre do curso de Sistemas para Internet - IFMT.  
 O tema é **animais da fazenda**, e o objetivo é encontrar todos os pares de cartas.
 
 ## 🎮 Como jogar
